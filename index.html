@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fitty Performance Platform</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="nav">
+        <div class="logo">FITTY</div>
+        <div class="nav-actions">
+          <button class="ghost" id="today-btn">Today's Focus</button>
+          <button class="primary" id="plan-btn">Build My Plan</button>
+        </div>
+      </nav>
+      <div class="hero-content">
+        <div>
+          <p class="tag">Performance Coach Dashboard</p>
+          <h1>Track your performance, log daily workouts, and get pro-level coaching.</h1>
+          <p>
+            Fitty organizes your training metrics, keeps your daily sessions consistent, and
+            recommends exercises like a personal trainer.
+          </p>
+          <div class="hero-actions">
+            <button class="primary" id="start-btn">Start Tracking</button>
+            <button class="ghost" id="demo-btn">Load Demo Day</button>
+          </div>
+        </div>
+        <div class="hero-card">
+          <h3>Today's Readiness</h3>
+          <div class="readiness">
+            <div>
+              <span class="label">Recovery</span>
+              <strong id="recovery-score">82%</strong>
+            </div>
+            <div>
+              <span class="label">Energy</span>
+              <strong id="energy-score">76%</strong>
+            </div>
+            <div>
+              <span class="label">Stress</span>
+              <strong id="stress-score">Low</strong>
+            </div>
+          </div>
+          <p class="muted">Scores update after every workout check-in.</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="grid" id="performance">
+        <article class="card">
+          <h2>Performance Snapshot</h2>
+          <div class="stat-grid">
+            <div class="stat">
+              <span class="label">Weekly Volume</span>
+              <strong id="volume">0</strong>
+              <small>sessions</small>
+            </div>
+            <div class="stat">
+              <span class="label">Strength PR</span>
+              <strong id="strength-pr">—</strong>
+              <small>top lift</small>
+            </div>
+            <div class="stat">
+              <span class="label">Cardio Minutes</span>
+              <strong id="cardio-mins">0</strong>
+              <small>this week</small>
+            </div>
+            <div class="stat">
+              <span class="label">Avg. RPE</span>
+              <strong id="avg-rpe">—</strong>
+              <small>session effort</small>
+            </div>
+          </div>
+          <div class="goal-row">
+            <div>
+              <label for="goal">Primary Goal</label>
+              <select id="goal">
+                <option value="strength">Build Strength</option>
+                <option value="endurance">Improve Endurance</option>
+                <option value="fat-loss">Fat Loss</option>
+                <option value="mobility">Mobility &amp; Recovery</option>
+              </select>
+            </div>
+            <div>
+              <label for="focus">Training Focus</label>
+              <select id="focus">
+                <option value="full-body">Full Body</option>
+                <option value="upper">Upper Body</option>
+                <option value="lower">Lower Body</option>
+                <option value="conditioning">Conditioning</option>
+              </select>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h2>Daily Workout Log</h2>
+          <form id="workout-form">
+            <label>
+              Workout Name
+              <input type="text" id="workout-name" placeholder="e.g., Power Lower" required />
+            </label>
+            <div class="form-row">
+              <label>
+                Duration (min)
+                <input type="number" id="workout-duration" min="10" max="180" required />
+              </label>
+              <label>
+                Session RPE
+                <input type="number" id="workout-rpe" min="1" max="10" required />
+              </label>
+            </div>
+            <label>
+              Top Lift / Highlight
+              <input type="text" id="workout-pr" placeholder="e.g., Deadlift 110kg" required />
+            </label>
+            <label>
+              Notes
+              <textarea id="workout-notes" rows="3" placeholder="How did it feel? Recovery cues, technique notes, etc."></textarea>
+            </label>
+            <button class="primary" type="submit">Save Workout</button>
+          </form>
+          <div class="log" id="workout-log"></div>
+        </article>
+      </section>
+
+      <section class="grid" id="recommendations">
+        <article class="card">
+          <h2>Trainer Recommendations</h2>
+          <p class="muted">Based on your goal, focus, and last session effort.</p>
+          <ul class="recommendations" id="recommendation-list"></ul>
+        </article>
+        <article class="card">
+          <h2>Coaching Cues</h2>
+          <div class="coach-list" id="coach-cues"></div>
+        </article>
+      </section>
+
+      <section class="card" id="plan">
+        <h2>7-Day Training Overview</h2>
+        <div class="schedule" id="schedule"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Built for athletes who want measurable progress. Save your data locally and stay consistent.</p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
