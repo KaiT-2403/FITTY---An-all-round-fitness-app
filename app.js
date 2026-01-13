@@ -9,6 +9,12 @@ const startBtn = document.getElementById("start-btn");
 const demoBtn = document.getElementById("demo-btn");
 const todayBtn = document.getElementById("today-btn");
 const planBtn = document.getElementById("plan-btn");
+const nutritionForm = document.getElementById("nutrition-form");
+const nutritionLog = document.getElementById("nutrition-log");
+const meditationButton = document.getElementById("meditation-btn");
+const meditationMinutes = document.getElementById("meditation-mins");
+const quoteText = document.getElementById("quote-text");
+const quoteButton = document.getElementById("quote-btn");
 
 const metrics = {
   volume: document.getElementById("volume"),
@@ -24,6 +30,8 @@ const readiness = {
 };
 
 const storageKey = "fitty.workouts";
+const nutritionKey = "fitty.nutrition";
+const meditationKey = "fitty.meditation";
 
 const recommendationBank = {
   strength: [
@@ -65,6 +73,14 @@ const scheduleTemplate = [
   { day: "Sun", focus: "Reset", detail: "Stretching + breathwork" },
 ];
 
+const motivationalQuotes = [
+  "Small steps every day create huge change.",
+  "Discipline beats motivation when motivation fades.",
+  "You are one workout away from a better mood.",
+  "Strong habits build strong bodies.",
+  "Consistency is the real personal trainer.",
+];
+
 const loadWorkouts = () => {
   try {
     return JSON.parse(localStorage.getItem(storageKey)) || [];
@@ -75,6 +91,30 @@ const loadWorkouts = () => {
 
 const saveWorkouts = (workouts) => {
   localStorage.setItem(storageKey, JSON.stringify(workouts));
+};
+
+const loadNutrition = () => {
+  try {
+    return JSON.parse(localStorage.getItem(nutritionKey)) || [];
+  } catch (error) {
+    return [];
+  }
+};
+
+const saveNutrition = (entries) => {
+  localStorage.setItem(nutritionKey, JSON.stringify(entries));
+};
+
+const loadMeditation = () => {
+  try {
+    return JSON.parse(localStorage.getItem(meditationKey)) || { minutes: 0 };
+  } catch (error) {
+    return { minutes: 0 };
+  }
+};
+
+const saveMeditation = (data) => {
+  localStorage.setItem(meditationKey, JSON.stringify(data));
 };
 
 const updateMetrics = (workouts) => {
@@ -149,6 +189,30 @@ const renderSchedule = () => {
     .join("");
 };
 
+const renderNutrition = (entries) => {
+  nutritionLog.innerHTML = entries
+    .slice(0, 3)
+    .map(
+      (entry) => `
+        <div class="log-item">
+          <strong>${entry.calories} kcal · P ${entry.protein}g / C ${entry.carbs}g / F ${entry.fats}g</strong>
+          <p class="muted">Habits: ${entry.habits.join(", ") || "None logged"}</p>
+          <small>${new Date(entry.date).toLocaleDateString()}</small>
+        </div>
+      `,
+    )
+    .join("");
+};
+
+const renderMeditation = (data) => {
+  meditationMinutes.textContent = data.minutes;
+};
+
+const updateQuote = () => {
+  const next = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+  quoteText.textContent = next;
+};
+
 const addWorkout = (event) => {
   event.preventDefault();
   const newWorkout = {
@@ -165,6 +229,36 @@ const addWorkout = (event) => {
   updateMetrics(workouts);
   renderWorkouts(workouts);
   workoutForm.reset();
+};
+
+const addNutrition = (event) => {
+  event.preventDefault();
+  const habits = [];
+  if (document.getElementById("habit-water").checked) habits.push("Hydration");
+  if (document.getElementById("habit-steps").checked) habits.push("Steps");
+  if (document.getElementById("habit-sleep").checked) habits.push("Sleep");
+  if (document.getElementById("habit-mobility").checked) habits.push("Mobility");
+
+  const entry = {
+    calories: document.getElementById("calories").value,
+    protein: document.getElementById("protein").value,
+    carbs: document.getElementById("carbs").value,
+    fats: document.getElementById("fats").value,
+    habits,
+    date: new Date().toISOString(),
+  };
+
+  const entries = [entry, ...loadNutrition()];
+  saveNutrition(entries);
+  renderNutrition(entries);
+  nutritionForm.reset();
+};
+
+const addMeditation = () => {
+  const data = loadMeditation();
+  const updated = { minutes: data.minutes + 10 };
+  saveMeditation(updated);
+  renderMeditation(updated);
 };
 
 const loadDemo = () => {
@@ -203,6 +297,9 @@ startBtn.addEventListener("click", () => scrollToSection("#performance"));
 demoBtn.addEventListener("click", loadDemo);
 todayBtn.addEventListener("click", () => scrollToSection("#recommendations"));
 planBtn.addEventListener("click", () => scrollToSection("#plan"));
+nutritionForm.addEventListener("submit", addNutrition);
+meditationButton.addEventListener("click", addMeditation);
+quoteButton.addEventListener("click", updateQuote);
 
 const init = () => {
   const workouts = loadWorkouts();
@@ -210,6 +307,9 @@ const init = () => {
   renderWorkouts(workouts);
   updateRecommendations();
   renderSchedule();
+  renderNutrition(loadNutrition());
+  renderMeditation(loadMeditation());
+  updateQuote();
 };
 
 init();

@@ -140,6 +140,72 @@
         </article>
       </section>
 
+      <section class="grid" id="wellness">
+        <article class="card">
+          <h2>Nutrition &amp; Habits</h2>
+          <p class="muted">Log your macros and daily habits to keep recovery on point.</p>
+          <form id="nutrition-form">
+            <div class="form-row">
+              <label>
+                Calories
+                <input type="number" id="calories" min="0" placeholder="e.g., 2200" required />
+              </label>
+              <label>
+                Protein (g)
+                <input type="number" id="protein" min="0" placeholder="e.g., 140" required />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                Carbs (g)
+                <input type="number" id="carbs" min="0" placeholder="e.g., 240" required />
+              </label>
+              <label>
+                Fats (g)
+                <input type="number" id="fats" min="0" placeholder="e.g., 70" required />
+              </label>
+            </div>
+            <div class="habit-grid">
+              <label class="checkbox">
+                <input type="checkbox" id="habit-water" />
+                Hydration goal met
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" id="habit-steps" />
+                8k+ steps
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" id="habit-sleep" />
+                7+ hours sleep
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" id="habit-mobility" />
+                Mobility work done
+              </label>
+            </div>
+            <button class="primary" type="submit">Save Nutrition &amp; Habits</button>
+          </form>
+          <div class="log" id="nutrition-log"></div>
+        </article>
+        <article class="card">
+          <h2>Meditation &amp; Mindset</h2>
+          <p class="muted">Center your focus and refresh your motivation.</p>
+          <div class="meditation-card">
+            <div>
+              <span class="label">Session Length</span>
+              <strong id="meditation-mins">0</strong>
+              <small>minutes</small>
+            </div>
+            <button class="ghost" id="meditation-btn">Log 10-Min Meditation</button>
+          </div>
+          <div class="quote-card">
+            <h3>Motivational Quote</h3>
+            <p id="quote-text">Small steps every day create huge change.</p>
+            <button class="ghost" id="quote-btn">New Quote</button>
+          </div>
+        </article>
+      </section>
+
       <section class="card" id="plan">
         <h2>7-Day Training Overview</h2>
         <div class="schedule" id="schedule"></div>
