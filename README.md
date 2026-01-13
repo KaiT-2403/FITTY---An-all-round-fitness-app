@@ -27,3 +27,4 @@ Open `index.html` directly in your browser by double-clicking it.
 > https://www.python.org/downloads/ or use Option B.
 
 Then open `http://localhost:8000` in your browser (Options A/B).
+Then open `http://localhost:8000` in your browser.
