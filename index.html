@@ -140,6 +140,69 @@
         </article>
       </section>
 
+      <section class="card" id="preferences">
+        <h2>Personalization &amp; Settings</h2>
+        <p class="muted">Tune the dashboard to match your goals, lifestyle, and schedule.</p>
+        <form id="settings-form" class="settings-grid">
+          <label>
+            Display Name
+            <input type="text" id="display-name" placeholder="e.g., Alex" />
+          </label>
+          <label>
+            Weekly Training Days
+            <select id="training-days">
+              <option value="3">3 days</option>
+              <option value="4">4 days</option>
+              <option value="5">5 days</option>
+              <option value="6">6 days</option>
+            </select>
+          </label>
+          <label>
+            Target Calories
+            <input type="number" id="target-calories" min="0" placeholder="e.g., 2300" />
+          </label>
+          <label>
+            Target Protein (g)
+            <input type="number" id="target-protein" min="0" placeholder="e.g., 150" />
+          </label>
+          <label>
+            Daily Steps Goal
+            <input type="number" id="target-steps" min="0" placeholder="e.g., 8000" />
+          </label>
+          <label>
+            Meditation Goal (min/day)
+            <input type="number" id="target-meditation" min="0" placeholder="e.g., 10" />
+          </label>
+          <label>
+            Recovery Focus
+            <select id="recovery-focus">
+              <option value="balanced">Balanced</option>
+              <option value="sleep">Sleep</option>
+              <option value="mobility">Mobility</option>
+              <option value="stress">Stress Reduction</option>
+            </select>
+          </label>
+          <label>
+            Motivation Style
+            <select id="motivation-style">
+              <option value="uplifting">Uplifting</option>
+              <option value="discipline">Discipline</option>
+              <option value="mindful">Mindful</option>
+            </select>
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="show-readiness" />
+            Show readiness scores
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="show-recommendations" />
+            Show trainer recommendations
+          </label>
+          <button class="primary" type="submit">Save Settings</button>
+        </form>
+        <div class="settings-summary" id="settings-summary"></div>
+      </section>
+
       <section class="grid" id="wellness">
         <article class="card">
           <h2>Nutrition &amp; Habits</h2>

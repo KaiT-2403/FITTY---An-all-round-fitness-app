@@ -15,6 +15,10 @@ const meditationButton = document.getElementById("meditation-btn");
 const meditationMinutes = document.getElementById("meditation-mins");
 const quoteText = document.getElementById("quote-text");
 const quoteButton = document.getElementById("quote-btn");
+const settingsForm = document.getElementById("settings-form");
+const settingsSummary = document.getElementById("settings-summary");
+const readinessSection = document.querySelector(".hero-card");
+const recommendationSection = document.getElementById("recommendations");
 
 const metrics = {
   volume: document.getElementById("volume"),
@@ -32,6 +36,7 @@ const readiness = {
 const storageKey = "fitty.workouts";
 const nutritionKey = "fitty.nutrition";
 const meditationKey = "fitty.meditation";
+const settingsKey = "fitty.settings";
 
 const recommendationBank = {
   strength: [
@@ -81,6 +86,24 @@ const motivationalQuotes = [
   "Consistency is the real personal trainer.",
 ];
 
+const motivationPools = {
+  uplifting: [
+    "Small steps every day create huge change.",
+    "You are one workout away from a better mood.",
+    "Strong habits build strong bodies.",
+  ],
+  discipline: [
+    "Discipline beats motivation when motivation fades.",
+    "Consistency is the real personal trainer.",
+    "Earn the next rep with focus.",
+  ],
+  mindful: [
+    "Breathe in calm, breathe out doubt.",
+    "Progress is a practice, not a sprint.",
+    "Reset your focus and return stronger.",
+  ],
+};
+
 const loadWorkouts = () => {
   try {
     return JSON.parse(localStorage.getItem(storageKey)) || [];
@@ -115,6 +138,42 @@ const loadMeditation = () => {
 
 const saveMeditation = (data) => {
   localStorage.setItem(meditationKey, JSON.stringify(data));
+};
+
+const loadSettings = () => {
+  try {
+    return (
+      JSON.parse(localStorage.getItem(settingsKey)) || {
+        displayName: "",
+        trainingDays: "4",
+        targetCalories: "",
+        targetProtein: "",
+        targetSteps: "",
+        targetMeditation: "",
+        recoveryFocus: "balanced",
+        motivationStyle: "uplifting",
+        showReadiness: true,
+        showRecommendations: true,
+      }
+    );
+  } catch (error) {
+    return {
+      displayName: "",
+      trainingDays: "4",
+      targetCalories: "",
+      targetProtein: "",
+      targetSteps: "",
+      targetMeditation: "",
+      recoveryFocus: "balanced",
+      motivationStyle: "uplifting",
+      showReadiness: true,
+      showRecommendations: true,
+    };
+  }
+};
+
+const saveSettings = (settings) => {
+  localStorage.setItem(settingsKey, JSON.stringify(settings));
 };
 
 const updateMetrics = (workouts) => {
@@ -209,7 +268,9 @@ const renderMeditation = (data) => {
 };
 
 const updateQuote = () => {
-  const next = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+  const settings = loadSettings();
+  const pool = motivationPools[settings.motivationStyle] || motivationalQuotes;
+  const next = pool[Math.floor(Math.random() * pool.length)];
   quoteText.textContent = next;
 };
 
@@ -261,6 +322,58 @@ const addMeditation = () => {
   renderMeditation(updated);
 };
 
+const updateSettingsSummary = (settings) => {
+  const nameLabel = settings.displayName ? `Welcome, ${settings.displayName}.` : "Welcome back.";
+  settingsSummary.innerHTML = `
+    <strong>${nameLabel}</strong>
+    <span class="muted">Training days: ${settings.trainingDays} · Recovery focus: ${settings.recoveryFocus}</span>
+    <span class="muted">Targets: ${settings.targetCalories || "—"} kcal · ${
+      settings.targetProtein || "—"
+    }g protein · ${settings.targetSteps || "—"} steps</span>
+    <span class="muted">Meditation goal: ${settings.targetMeditation || "—"} min · Motivation: ${
+      settings.motivationStyle
+    }</span>
+  `;
+};
+
+const applySettings = (settings) => {
+  readinessSection.style.display = settings.showReadiness ? "block" : "none";
+  recommendationSection.style.display = settings.showRecommendations ? "grid" : "none";
+  updateSettingsSummary(settings);
+};
+
+const saveSettingsForm = (event) => {
+  event.preventDefault();
+  const settings = {
+    displayName: document.getElementById("display-name").value.trim(),
+    trainingDays: document.getElementById("training-days").value,
+    targetCalories: document.getElementById("target-calories").value,
+    targetProtein: document.getElementById("target-protein").value,
+    targetSteps: document.getElementById("target-steps").value,
+    targetMeditation: document.getElementById("target-meditation").value,
+    recoveryFocus: document.getElementById("recovery-focus").value,
+    motivationStyle: document.getElementById("motivation-style").value,
+    showReadiness: document.getElementById("show-readiness").checked,
+    showRecommendations: document.getElementById("show-recommendations").checked,
+  };
+  saveSettings(settings);
+  applySettings(settings);
+  updateQuote();
+};
+
+const hydrateSettingsForm = (settings) => {
+  document.getElementById("display-name").value = settings.displayName;
+  document.getElementById("training-days").value = settings.trainingDays;
+  document.getElementById("target-calories").value = settings.targetCalories;
+  document.getElementById("target-protein").value = settings.targetProtein;
+  document.getElementById("target-steps").value = settings.targetSteps;
+  document.getElementById("target-meditation").value = settings.targetMeditation;
+  document.getElementById("recovery-focus").value = settings.recoveryFocus;
+  document.getElementById("motivation-style").value = settings.motivationStyle;
+  document.getElementById("show-readiness").checked = settings.showReadiness;
+  document.getElementById("show-recommendations").checked = settings.showRecommendations;
+};
+
 const loadDemo = () => {
   const demo = [
     {
@@ -300,15 +413,19 @@ planBtn.addEventListener("click", () => scrollToSection("#plan"));
 nutritionForm.addEventListener("submit", addNutrition);
 meditationButton.addEventListener("click", addMeditation);
 quoteButton.addEventListener("click", updateQuote);
+settingsForm.addEventListener("submit", saveSettingsForm);
 
 const init = () => {
   const workouts = loadWorkouts();
+  const settings = loadSettings();
   updateMetrics(workouts);
   renderWorkouts(workouts);
   updateRecommendations();
   renderSchedule();
   renderNutrition(loadNutrition());
   renderMeditation(loadMeditation());
+  hydrateSettingsForm(settings);
+  applySettings(settings);
   updateQuote();
 };
 

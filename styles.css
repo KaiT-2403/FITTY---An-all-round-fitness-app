@@ -176,6 +176,11 @@ form {
   gap: 16px;
 }
 
+.settings-grid {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-top: 16px;
+}
+
 .form-row {
   display: grid;
   gap: 16px;
@@ -263,6 +268,16 @@ form {
   border: 1px solid rgba(255, 141, 119, 0.3);
   display: grid;
   gap: 12px;
+}
+
+.settings-summary {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #f1f7ff;
+  border: 1px solid rgba(75, 92, 255, 0.16);
+  display: grid;
+  gap: 8px;
 }
 
 .schedule {
